@@ -134,13 +134,12 @@ setLiveDraftedState = (ownerData) => {
 }
   
 findOwnedPlayers = () => {
-  let playerArray = []
   let drafted = this.state.drafted
   let ownerArray = drafted(player => player.ownerId == localStorage.user_id)
-  ownerArray.map(obj => (
-    playerArray.push(Object.value(obj.player_id))
-  ))
-returnPlayerObjects(playerArray) 
+  let playerArray = ownerArray.map(obj => (
+    obj.player_id)
+  )
+this.returnPlayerObjects(playerArray) 
 }
 
 returnPlayerObjects = (array) => {
