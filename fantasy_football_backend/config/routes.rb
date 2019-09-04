@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
     
+  resources :owners
   resources :player_stats
   resources :player_values
   resources :core_players

@@ -14,6 +14,7 @@ const leagueUrl = 'http://localhost:3000/fantasy_leagues'
 const valueUrl = 'http://localhost:3000/player_values'
 const corePlayerUrl = 'http://localhost:3000/core_players'
 const statUrl = 'http://localhost:3000/player_stats'
+const ownerUrl = 'http://localhost:3000/owners'
 
 class App extends React.Component {
   constructor() {
@@ -131,6 +132,16 @@ setDraftedState = (obj) => {
   //   drafted : [...this.state.drafted, obj]
   // })
   console.log(obj)
+   // let i = 0
+  // let players = this.state.players
+  // while(i < players.length) {
+  //   if(players[i]["player_id"] == player_id) {
+  //     this.setState({
+  //       drafted: [...this.state.drafted, (players[i])]
+  //     }, () => console.log(this.state.drafted))
+  //   }
+  //   i += 1
+  // }
 }
   
 // setCorePlayersState = (corePlayerInfo) => {
@@ -171,18 +182,21 @@ setDraftedState = (obj) => {
 //   })
 // }
 
-handleDraft =(player_id) => {
-  let i = 0
-  let players = this.state.players
-  while(i < players.length) {
-    if(players[i]["player_id"] == player_id) {
-      this.setState({
-        drafted: [...this.state.drafted, (players[i])]
-      }, () => console.log(this.state.drafted))
-    }
-    i += 1
-  }
-  
+handleDraft = (player_id) => {
+  console.log(player_id, localStorage.user_id)
+  // return fetch(ownerUrl, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept' : 'application/json'
+  //   },
+  //   body: JSON.stringify ({
+  //     user_id: localStorage.user_id,
+  //     player_id: player_id
+  //   })
+  // })
+  // .then(res => res.json())
+  // .then(data => console.log(data))
   }
 
 render() {
@@ -204,9 +218,10 @@ render() {
     </div>
   </Router>
  </>
-  );
+  )
 }
 }
+
 
 
 export default App;
