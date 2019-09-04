@@ -75,7 +75,6 @@ class App extends React.Component {
      }
   }
 
-
 fetchLeagues = () => {
     fetch(leagueUrl)
     .then(res => res.json())
@@ -127,21 +126,16 @@ setPlayersValueState = (playerValueInfo) => {
   })
 }
 
-setDraftedState = (obj) => {
-  // this.setState({
-  //   drafted : [...this.state.drafted, obj]
-  // })
-  console.log(obj)
-   // let i = 0
-  // let players = this.state.players
-  // while(i < players.length) {
-  //   if(players[i]["player_id"] == player_id) {
-  //     this.setState({
-  //       drafted: [...this.state.drafted, (players[i])]
-  //     }, () => console.log(this.state.drafted))
-  //   }
-  //   i += 1
-  // }
+setLiveDraftedState = (ownerData) => {
+  let obj = {owner_id: ownerData.owner_id, player_id: ownerId.player_id}
+  this.setState({
+    drafted:[...this.state.drafted, obj]
+  })
+}
+  
+findOwnedPlayers = () => {
+  let drafted = this.state.drafted
+  let ownerArray = find.drafted(player => player.owner_id == localStorage.user_id)
 }
   
 // setCorePlayersState = (corePlayerInfo) => {
@@ -183,20 +177,19 @@ setDraftedState = (obj) => {
 // }
 
 handleDraft = (player_id) => {
-  console.log(player_id, localStorage.user_id)
-  // return fetch(ownerUrl, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept' : 'application/json'
-  //   },
-  //   body: JSON.stringify ({
-  //     user_id: localStorage.user_id,
-  //     player_id: player_id
-  //   })
-  // })
-  // .then(res => res.json())
-  // .then(data => console.log(data))
+  return fetch(ownerUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept' : 'application/json'
+    },
+    body: JSON.stringify ({
+      user_id: localStorage.user_id,
+      player_id: player_id
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log(data))
   }
 
 render() {
