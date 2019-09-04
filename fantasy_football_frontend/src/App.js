@@ -127,16 +127,26 @@ setPlayersValueState = (playerValueInfo) => {
 }
 
 setLiveDraftedState = (ownerData) => {
-  let obj = {owner_id: ownerData.owner_id, player_id: ownerId.player_id}
+  let obj = {ownerId: ownerData.owner_id, playerId: ownerData.player_id}
   this.setState({
     drafted:[...this.state.drafted, obj]
   })
 }
   
 findOwnedPlayers = () => {
+  let playerArray = []
   let drafted = this.state.drafted
-  let ownerArray = find.drafted(player => player.owner_id == localStorage.user_id)
+  let ownerArray = drafted(player => player.ownerId == localStorage.user_id)
+  ownerArray.map(obj => (
+    playerArray.push(Object.value(obj.player_id))
+  ))
+returnPlayerObjects(playerArray) 
 }
+
+returnPlayerObjects = (array) => {
+  array[0].map(obj => obj.player_id)
+}
+
   
 // setCorePlayersState = (corePlayerInfo) => {
 //   corePlayerInfo.forEach(obj => {
