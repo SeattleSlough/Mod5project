@@ -1,0 +1,2 @@
+class PlayerValue < ApplicationRecord
+end

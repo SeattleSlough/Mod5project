@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  core_player: one
+  user: one
+
+two:
+  core_player: two
+  user: two

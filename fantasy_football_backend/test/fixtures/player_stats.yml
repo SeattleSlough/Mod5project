@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  display_name: MyString
+  fname: MyString
+  lname: MyString
+  rush_att: 1
+  rush_yards: 1
+  rush_td: 1
+  rec: 1
+  rec_yards: 1
+  rec_td: 1
+  fantasy_points: 1
+  completions: 1
+  attempts: 1
+  passing_yards: 1
+  passing_td: 1
+  passing_int: 1
+  xp: 1
+  fg: 1
+
+two:
+  display_name: MyString
+  fname: MyString
+  lname: MyString
+  rush_att: 1
+  rush_yards: 1
+  rush_td: 1
+  rec: 1
+  rec_yards: 1
+  rec_td: 1
+  fantasy_points: 1
+  completions: 1
+  attempts: 1
+  passing_yards: 1
+  passing_td: 1
+  passing_int: 1
+  xp: 1
+  fg: 1
