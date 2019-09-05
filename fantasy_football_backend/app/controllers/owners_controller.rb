@@ -6,7 +6,8 @@ end
 
 
 def create
-    @owner.save(user_id: params[id], player_id: params[:player_id])
+    @owner = Owner.create(user_id: params[:user_id], player_id: params[:player_id])
+    render json: @owner
 end
 
 def destroy

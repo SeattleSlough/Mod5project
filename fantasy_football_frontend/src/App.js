@@ -4,11 +4,11 @@ import './App.css';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
 import Login from './component/Login'
-import PlayerContainer from './component/PlayerContainer'
-import LeagueContainer from './component/LeagueContainer'
+import PlayerContainer from './container/PlayerContainer'
+import LeagueContainer from './container/LeagueContainer'
 import Signup from './component/Signup'
-import DraftContainer from './component/DraftContainer'
-import Reference from './component/Reference'
+import DraftContainer from './container/DraftContainer'
+import Reference from './container/Reference'
 
 const leagueUrl = 'http://localhost:3000/fantasy_leagues'
 const valueUrl = 'http://localhost:3000/player_values'
@@ -132,21 +132,7 @@ setLiveDraftedState = (ownerData) => {
     drafted:[...this.state.drafted, obj]
   })
 }
-  
-findOwnedPlayers = () => {
-  let drafted = this.state.drafted
-  let ownerArray = drafted(player => player.ownerId == localStorage.user_id)
-  let playerArray = ownerArray.map(obj => (
-    obj.player_id)
-  )
-this.returnPlayerObjects(playerArray) 
-}
 
-returnPlayerObjects = (array) => {
-  array[0].map(obj => obj.player_id)
-}
-
-  
 // setCorePlayersState = (corePlayerInfo) => {
 //   corePlayerInfo.forEach(obj => {
 //     this.setState({
@@ -190,7 +176,8 @@ handleDraft = (player_id) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept' : 'application/json'
+      'Accept' : 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     },
     body: JSON.stringify ({
       user_id: localStorage.user_id,
@@ -198,7 +185,7 @@ handleDraft = (player_id) => {
     })
   })
   .then(res => res.json())
-  .then(data => console.log(data))
+  .then(data => console.log(data))///this is where setLiveDrafted() comes in
   }
 
 render() {
