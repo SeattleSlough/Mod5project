@@ -22,11 +22,11 @@ class App extends React.Component {
      this.state = {
        players: [],
 
-       leagues : {
-         id: [],
-         leagueName: [],
-         people: []
-       },
+      //  leagues : {
+      //    id: [],
+      //    leagueName: [],
+      //    people: []
+      //  },
       //  playersValues: {
       //    displayName: [],
       //    position: [],
@@ -75,11 +75,11 @@ class App extends React.Component {
      }
   }
 
-fetchLeagues = () => {
-    fetch(leagueUrl)
-    .then(res => res.json())
-    .then(data => this.setLeagueState(data))
-}
+// fetchLeagues = () => {
+//     fetch(leagueUrl)
+//     .then(res => res.json())
+//     .then(data => this.setLeagueState(data))
+// }
 
 fetchValuePlayers = () => {
   return fetch(valueUrl)
@@ -100,23 +100,25 @@ fetchValuePlayers = () => {
 // }
 
 componentDidMount() {
-    this.fetchLeagues()
+    // this.fetchLeagues()
     // this.fetchPlayerStats()
     this.fetchValuePlayers()
     // this.fetchCorePlayers()
+    this.fetchDrafted()
+    
 }
 
-setLeagueState = (leagueInfo) => {
-    leagueInfo.forEach(obj => {
-        this.setState({
-         leagues : {
-           id: [...this.state.leagues.id, obj.id],
-           leagues: [...this.state.leagues.leagueName, obj.league_name],
-           people: [this.state.leagues.people, obj.people]
-         }
-        })
-    })      
-} 
+// setLeagueState = (leagueInfo) => {
+//     leagueInfo.forEach(obj => {
+//         this.setState({
+//          leagues : {
+//            id: [...this.state.leagues.id, obj.id],
+//            leagues: [...this.state.leagues.leagueName, obj.league_name],
+//            people: [this.state.leagues.people, obj.people]
+//          }
+//         })
+//     })      
+// } 
 
 setPlayersValueState = (playerValueInfo) => {
   playerValueInfo.forEach(obj => {
@@ -126,8 +128,34 @@ setPlayersValueState = (playerValueInfo) => {
   })
 }
 
+fetchDrafted = () => {
+  return fetch(ownerUrl, {
+    method: 'GET',
+    headers: {
+      'Content-Type' : 'application/json',
+      'Accept' : 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => this.setDatabaseDraftedSate(data))
+}
+
+setDatabaseDraftedSate = (array) => {
+  let playerArray = []
+  for(let i = 0; i < array.length; i++){
+    let obj = {user_id: array[i].user_id, player_id: array[i].player_id}
+    playerArray.push(obj)
+  }
+  playerArray.map(obj => {
+    this.setState({
+      drafted : [...this.state.drafted, obj]
+    })
+  })
+}
+
 setLiveDraftedState = (ownerData) => {
-  let obj = {ownerId: ownerData.owner_id, playerId: ownerData.player_id}
+  let obj = {userId: ownerData.user_id, playerId: ownerData.player_id}
   this.setState({
     drafted:[...this.state.drafted, obj]
   })
@@ -185,7 +213,7 @@ handleDraft = (player_id) => {
     })
   })
   .then(res => res.json())
-  .then(data => console.log(data))///this is where setLiveDrafted() comes in
+  .then(data => this.setLiveDraftedState(data))
   }
 
 render() {
@@ -203,7 +231,7 @@ render() {
         <Route path="/leagues" render={() => <LeagueContainer leagues={this.state}/>}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/draft" render={() => <DraftContainer players={this.state.players} draft={this.handleDraft}/>}/>
-        <Route path="/owned" render={() => <Reference drafted={this.state.drafted}/>}/>
+        <Route path="/owned" render={() => <Reference drafted={this.state.drafted} mount={this.fetchDrafted} players={this.state.players}/>}/>
     </div>
   </Router>
  </>
