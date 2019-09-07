@@ -9,6 +9,8 @@ import LeagueContainer from './container/LeagueContainer'
 import Signup from './component/Signup'
 import DraftContainer from './container/DraftContainer'
 import Reference from './container/Reference'
+import Data from './Data'
+
 
 const leagueUrl = 'http://localhost:3000/fantasy_leagues'
 const valueUrl = 'http://localhost:3000/player_values'
@@ -21,6 +23,7 @@ class App extends React.Component {
      super();
      this.state = {
        players: [],
+       loggedin: false,
 
       //  leagues : {
       //    id: [],
@@ -216,17 +219,24 @@ handleDraft = (player_id) => {
   .then(data => this.setLiveDraftedState(data))
   }
 
+  setLoginStatus = (boolean) => {
+  this.setState({
+    loggedin: boolean
+  })
+  }
+
 render() {
+  {try{Data.getCoreData()}catch(e){console.table({error: e})}}
   return (
   <>
   <Router>
     <div className="App">
-        <Route exact path='/' component={Login}/>
+        <Route exact path='/' render={(props) => <Login {...props} setLoginStatus={this.setLoginStatus}/>}/>
         <Route path="/players" render={() => 
         <PlayerContainer 
         stats={this.state}
         value={this.state}
-        core={this.state.playersCore} handleDraft={this.handleDraft}/>
+        core={this.state.playersCore} setLoginStatus={this.handleDraft}/>
         }/>
         <Route path="/leagues" render={() => <LeagueContainer leagues={this.state}/>}/>
         <Route path="/signup" component={Signup}/>

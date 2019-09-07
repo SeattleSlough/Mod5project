@@ -33,14 +33,18 @@ class Login extends React.Component {
     }
 
 handleLogin = (data) => {
+    console.log("start handle login")
     localStorage.setItem("token", data.jwt)
     localStorage.setItem("user_id", data.user_id)
+    this.props.setLoginStatus(true)
+    this.props.history.push("/draft")
+    console.log(this.props.history)
 }
 
 
     handleSubmit = (ev) => {
         ev.preventDefault();
-        console.log(this.state.username, this.state.password);
+        // console.log(this.state.username, this.state.password);
         this.login()
     }
     
