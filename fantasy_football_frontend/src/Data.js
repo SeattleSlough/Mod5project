@@ -53,7 +53,7 @@ static createObject = (coreData, valueData, statsData) => {
             }
         }
     }    
-        console.log("array3", objArray3)
+        return objArray3
     }
     }
 
