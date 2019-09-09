@@ -2,7 +2,9 @@ import React from 'react'
 import Draft from '../component/Draft'
 import {Link} from 'react-router-dom'
 
+
 class DraftContainer extends React.Component {
+
     render() {
         return(
             <div> 

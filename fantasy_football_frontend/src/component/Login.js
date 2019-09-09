@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+
 const user_api = 'http://localhost:3000/api/v1/login'
 
 class Login extends React.Component {
@@ -24,19 +25,26 @@ class Login extends React.Component {
                 password: this.state.password
             })
         }).then(res => res.json()).then(
-            data => this.handleLogin(data)
+            data => {
+                console.log(data)
+                this.handleLogin(data)
+            }
         )
     }
 
 handleLogin = (data) => {
+    console.log("start handle login")
     localStorage.setItem("token", data.jwt)
-    //dispatch data.user.username to data store
+    localStorage.setItem("user_id", data.user_id)
+    this.props.setLoginStatus(true)
+    this.props.history.push("/draft")
+    console.log(this.props.history)
 }
 
 
     handleSubmit = (ev) => {
         ev.preventDefault();
-        console.log(this.state.username, this.state.password);
+        // console.log(this.state.username, this.state.password);
         this.login()
     }
     
