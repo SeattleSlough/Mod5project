@@ -58,22 +58,24 @@ handleLogin = (data) => {
 
     render() {
         return (
+            <div id="loginBackground">
+                <h1>Fantasy Football</h1>
             <div>
-            <div>
-            <form onSubmit={(ev) => this.handleSubmit(ev)}>
+            <form id="loginForm" onSubmit={(ev) => this.handleSubmit(ev)}>
                 <label>
                    Username:
                    <input type="text" placeholder="username" name="username" value={this.state.username} onChange={this.handleUsernameChange}/>
                 </label>
+                <br />
                 <label>
                    Password:
                    <input type="text" placeholder="password" name="password" value={this.state.password} onChange={this.handlePasswordChange}/>
                 </label>
+                <br />
                 <input type="submit" value="Submit"/>
             </form>
             </div>
                 <Link to="/signup">Create Account</Link>
-                <Link to="/draft">Draft</Link>
             </div>
         )
     }

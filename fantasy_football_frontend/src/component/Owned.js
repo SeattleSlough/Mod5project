@@ -2,7 +2,7 @@ import React from 'react'
 
 function Owned(props) {
     return(
-        <p>{props.name}</p>
+        <div className="draftPlayer">{props.name}</div>
     )
 }
 

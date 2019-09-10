@@ -8,10 +8,19 @@ class DraftContainer extends React.Component {
     render() {
         return(
             <div> 
-            <Link to='/owned'>Your Players</Link>
-            <div>
+            <Link className="draftLink" to='/owned'>Your Players</Link>
+            <div id="draftContainer">
                 {this.props.players.map(obj => (
-                    <Draft name={obj["display_name"]} id={obj["player_id"]} position={obj["position"]} draft={this.props.draft}/>
+                    <Draft 
+                    name={obj["display_name"]} 
+                    id={obj["player_id"]} 
+                    position={obj["position"]} 
+                    cost={obj["max_price"]}
+                    rank={obj["overall_rank"]}
+                    positionRank={obj["position_rank"]}
+                    points={obj["fantasy_points"]} 
+                    draft={this.props.draft}
+                    />
                     ))}
             </div>
             </div>

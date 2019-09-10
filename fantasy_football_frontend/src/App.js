@@ -24,50 +24,6 @@ class App extends React.Component {
      this.state = {
        players: [],
        loggedin: false,
-
-      //  leagues : {
-      //    id: [],
-      //    leagueName: [],
-      //    people: []
-      //  },
-      //  playersValues: {
-      //    displayName: [],
-      //    position: [],
-      //    playerId: [],
-      //    drafted: false,
-      //    team: [],
-      //    byeweek: [],
-      //    minPrice: [],
-      //    maxPrice: [],
-      //    avgPrice: []
-      //  },
-      //  playersCore : {
-      //    displayName: [], 
-      //    position: [],
-      //    playerId: [],
-      //    standDev: [],
-      //    nerdRank: [],
-      //    positionRank: [],
-      //    overallRank: [],
-      //   },
-      //  playersStats: { 
-      //    displayName: [],
-      //    playerId:[],
-      //    position:[],
-      //    rushAtt: [],
-      //    rushYards: [],
-      //    fumbles: [],
-      //    rec: [],
-      //    recYards: [],
-      //    recTd: [],
-      //    attempts: [],
-      //    passingYards: [],
-      //    passingTd: [],
-      //    passingInt: [],
-      //    xp: [],
-      //    fg: [],
-      //    fantasyPoints: []
-      //  },
        users: {
          id: "",
          username: "",
@@ -84,31 +40,17 @@ class App extends React.Component {
 //     .then(data => this.setLeagueState(data))
 // }
 
-fetchValuePlayers = () => {
-  return fetch(valueUrl)
-  .then(res => res.json())
-  .then(data => this.setPlayersValueState(data))
+componentDidMount() {
+  this.setPlayersState()
+    // this.fetchLeagues()
+    // this.fetchDrafted()
+    
 }
 
-// fetchCorePlayers = () => {
-//   return fetch(corePlayerUrl)
-//   .then(res => res.json())
-//   .then(data => this.setCorePlayersState(data))
-// }
-
-// fetchPlayerStats = () => {
-//   return fetch(statUrl)
-//   .then(res => res.json())
-//   .then(data => this.setPlayerStatsState(data))
-// }
-
-componentDidMount() {
-    // this.fetchLeagues()
-    // this.fetchPlayerStats()
-    this.fetchValuePlayers()
-    // this.fetchCorePlayers()
-    this.fetchDrafted()
-    
+setPlayersState = () => {
+  Data.getCoreData().then(data => this.setState({
+    players:[...data]
+  })).then(data => this.fetchDrafted())
 }
 
 // setLeagueState = (leagueInfo) => {
@@ -123,14 +65,6 @@ componentDidMount() {
 //     })      
 // } 
 
-setPlayersValueState = (playerValueInfo) => {
-  playerValueInfo.forEach(obj => {
-    this.setState({
-      players : [...this.state.players, obj]
-    })
-  })
-}
-
 fetchDrafted = () => {
   return fetch(ownerUrl, {
     method: 'GET',
@@ -141,66 +75,41 @@ fetchDrafted = () => {
     }
   })
   .then(res => res.json())
-  .then(data => this.setDatabaseDraftedSate(data))
+  .then(data => this.setIdsOfOwned(data))
 }
 
-setDatabaseDraftedSate = (array) => {
-  let playerArray = []
-  for(let i = 0; i < array.length; i++){
-    let obj = {user_id: array[i].user_id, player_id: array[i].player_id}
-    playerArray.push(obj)
+setIdsOfOwned = (array) => {
+  let ownedIdArray = []
+for(let i = 0; i < array.length; i++) {
+  if(array[i].user_id == localStorage.user_id) {
+    ownedIdArray.push(array[i].player_id)
   }
-  playerArray.map(obj => {
-    this.setState({
-      drafted : [...this.state.drafted, obj]
-    })
-  })
+}
+this.setPools(ownedIdArray)
 }
 
-setLiveDraftedState = (ownerData) => {
-  let obj = {userId: ownerData.user_id, playerId: ownerData.player_id}
-  this.setState({
-    drafted:[...this.state.drafted, obj]
-  })
+setPools = (array) => {
+  let rawDrafted = [];
+  let available = []
+  let object = {}
+
+  this.state.players.map(obj => {
+    for(let i = 0; i < array.length; i++) {
+      if(obj.player_id == array[i]) {
+        rawDrafted.push(obj)
+      }}})
+    
+    for(let k = 0; k < this.state.players.length; k++) {
+      if(array.indexOf(this.state.players[k].player_id) === -1) {
+          available.push(this.state.players[k])
+          }
+         }
+
+  let drafted = [...new Set(rawDrafted)]
+  object[1] = drafted
+  object[2] = available
+  return object
 }
-
-// setCorePlayersState = (corePlayerInfo) => {
-//   corePlayerInfo.forEach(obj => {
-//     this.setState({
-//       playersCore: {
-//         displayName: [...this.state.playersCore.displayName, obj.display_name],
-//         playerId : [...this.state.playersCore.playerId, obj.player_id],
-//         position: [...this.state.playersCore.position, obj.position],
-//         nerdRank: [...this.state.playersCore.nerdRank, obj.nerd_rank],
-//         positionRank: [...this.state.playersCore.positionRank, obj.position_rank],
-//         overallRank: [...this.state.playersCore.overallRank, obj.overall_rank],
-//         standDev: [...this.state.playersCore.standDev, obj.stand_dev]
-//     }
-//   })
-// })
-// }
-
-// setPlayerStatsState = (statsInfo) => {
-//   statsInfo.forEach(obj => {
-//     this.setState({
-//       playersStats : {
-//          rushAtt: [...this.state.playersStats.rushAtt, obj.rush_att],
-//          rushYards: [...this.state.playersStats.rushYards, obj.rush_yards],
-//          fumbles: [...this.state.playersStats.fumbles, obj.fumbles],
-//          rec: [...this.state.playersStats.rec, obj.rec],
-//          recYards: [...this.state.playersStats.recYards, obj.rec_yards],
-//          recTd: [...this.state.playersStats.recTd, obj.rec_td],
-//          attempts: [...this.state.playersStats.attempts, obj.attempts],
-//          passingYards: [...this.state.playersStats.passingYards, obj.passing_yards],
-//          passingTd: [...this.state.playersStats.passingTd, obj.passing_td],
-//          passingInt: [...this.state.playersStats.passingInt, obj.passing_int],
-//          xp: [...this.state.playersStats.xp, obj.xp],
-//          fg: [...this.state.playersStats.fg, obj.fg],
-//          fantasyPoints: [...this.state.playersStats.fantasyPoints, obj.fantasy_points]
-//       }
-//     })
-//   })
-// }
 
 handleDraft = (player_id) => {
   return fetch(ownerUrl, {
@@ -226,7 +135,6 @@ handleDraft = (player_id) => {
   }
 
 render() {
-  {try{Data.getCoreData()}catch(e){console.table({error: e})}}
   return (
   <>
   <Router>

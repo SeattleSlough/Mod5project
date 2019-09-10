@@ -53,8 +53,12 @@ static createObject = (coreData, valueData, statsData) => {
             }
         }
     }    
+        this.portArray(playerIdArray)
         return objArray3
     }
+
+    static portArray = (array) => {
+    return array}
     }
 
 export default Data

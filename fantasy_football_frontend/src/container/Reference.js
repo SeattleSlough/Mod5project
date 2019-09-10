@@ -1,20 +1,21 @@
 import React from 'react'
 import Owned from '../component/Owned'
 import {Link} from 'react-router-dom'
+import Data from '../Data'
 
 class Reference extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            owned: []
-        }
-    }
 
     componentDidMount() {
-        this.props.mount()
+        this.setPlayersState()
         this.findOwnedPlayers()
     }
+
+    setPlayersState = () => {
+        Data.getCoreData().then(data => this.setState({
+          players:[...data]
+        }))
+      }
 
     componentWillReceiveProps(props) {
         this.findOwnedPlayers()
@@ -28,7 +29,7 @@ class Reference extends React.Component {
                 playerArray.push(drafted[i].player_id)
             }
         }
-        this.returnPlayerObjects(playerArray, this.props.players) 
+        // this.returnPlayerObjects(playerArray, this.state.players) 
       }
       
       returnPlayerObjects = (arrayOfIds, arrayOfPlayerObjects) => {
@@ -54,12 +55,14 @@ class Reference extends React.Component {
 
     render() {
         return(
-            <>
+            <div>
             <Link to='/draft'>Back To Draft</Link>
-            {this.state.owned.map(obj => (
-                <Owned name={obj.display_name} id={obj.player_id}/>
-            ))}
-            </>
+                <div className="ownedWrapper" id="draftContainer">
+                    {this.state.owned.map(obj => (
+                        <Owned name={obj.display_name} id={obj.player_id}/>
+                    ))}
+                </div>
+            </div>
         )
     }
 }
